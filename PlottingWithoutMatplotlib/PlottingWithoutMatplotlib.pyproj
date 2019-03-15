@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>289f200b-2467-4919-a04a-254df71952ad</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>PlottingWithoutMatplotlib.py</StartupFile>
+    <StartupFile>DrawingMethods.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -22,7 +22,13 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="PlottingWithoutMatplotlib.py" />
+    <Compile Include="Plot.py">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="DrawingMethods.py" />
+    <Compile Include="ParsingMethods.py">
+      <SubType>Code</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Interpreter Include="env\">

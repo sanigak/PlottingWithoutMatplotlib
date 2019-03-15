@@ -10,9 +10,6 @@ turtle.setworldcoordinates(-100, -100, 1100, 1100)
 turtle.hideturtle()
 ticks = numpy.arange(0,1001,100)
 
-fakeMin = -5
-fakeMax = 40
-
 myPlot = Plot()
 
 
@@ -90,11 +87,18 @@ def drawTicks(ticksList):
         turtle.forward(30)
 
 def labelTicks(min, max):
+    
+    if min < 0:
+        range = abs(min)+abs(max)
+    else:
+        range = max
 
-    range = abs(min)+abs(max)
     increment = range * .1
 
-    labels = numpy.arange(min,max+1,increment)
+    if min < 0:
+        labels = numpy.arange(min,max+1,increment)
+    else:
+        labels = numpy.arange(0,max+1,increment)
 
     height = -12
     for label in labels:
@@ -112,26 +116,23 @@ def drawAxisX(height):
     turtle.seth(0)
     turtle.forward(1000)
 
+def Engine():
 
-drawAxisY()
-drawTicks(ticks)
-labelTicks(-5,40)
-drawAxisX(myPlot.xAxisHeight)
+    drawAxisY()
+    drawTicks(ticks)
+    labelTicks(myPlot.xMin, myPlot.xMax)
+    drawAxisX(myPlot.xAxisHeight)
 
-iterator = 0
+    iterator = 0
+    while iterator < myPlot.xSeries.count():
+        x = myPlot.locations[iterator]
+        y = myPlot.xAxisHeight
+        height = myPlot.xSeries[iterator]
+        height = (height/myPlot.rangey*1000)
+        drawRectangle(x, y, height, 30)
+        iterator += 1
 
-while iterator < myPlot.xSeries.count():
-    x = myPlot.locations[iterator]
-    y = myPlot.xAxisHeight
-    height = myPlot.xSeries[iterator]
-    height = (height/myPlot.rangey*1000)
-    drawRectangle(x, y, height, 30)
-    iterator += 1
+    turtle.done()
 
-turtle.done()
+Engine()
 
-
-
-
-
-    

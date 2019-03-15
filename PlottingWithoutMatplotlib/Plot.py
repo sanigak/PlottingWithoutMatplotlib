@@ -3,7 +3,7 @@ import numpy
 
 #stores info necessary for generating plot
 
-class Plot():
+class Plot:
 
 
     dataset = pandas.read_csv("example.csv")
@@ -12,16 +12,19 @@ class Plot():
 
     categoryType = columns[0]
     xType = columns[1]
-    yType = columns[2]
+
 
     categorySeries = dataset[categoryType]
     xSeries = dataset[xType]
-    ySeries = dataset[yType]
+
 
     xMin = xSeries.min()
     xMax = xSeries.max()
 
-    rangey = abs(xMin)+abs(xMax)
+    if xMin < 0:
+        rangey = abs(xMin)+abs(xMax)
+    else:
+        rangey = xMax
 
     def xAxisHeight(min, max):
         if (min>0):
@@ -34,7 +37,7 @@ class Plot():
 
     def rectangleStartingX(numberOfItems):
         factor = 900/(numberOfItems-1)
-        locations = numpy.arange(0,901,factor)
+        locations = numpy.arange(15,916,factor)
         return locations
 
 

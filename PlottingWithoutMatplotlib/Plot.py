@@ -11,7 +11,7 @@ class Plot:
     columns = dataset.columns
 
     categoryType = columns[0]
-    xType = columns[1]
+    xType = columns[2]
 
 
     categorySeries = dataset[categoryType]
@@ -43,6 +43,8 @@ class Plot:
 
     xAxisHeight = xAxisHeight(xMin,xMax)
     locations = rectangleStartingX(xSeries.count())
+    labels = locations + 25
+    
 
 
 

@@ -12,6 +12,7 @@ ticks = numpy.arange(0,1001,100)
 
 myPlot = Plot()
 
+turtle.speed = "fastest"
 
 def drawRectangle(x, y, height, width):
 
@@ -116,13 +117,46 @@ def drawAxisX(height):
     turtle.seth(0)
     turtle.forward(1000)
 
-def Engine():
+def labelAxisX(min, max):
 
-    drawAxisY()
-    drawTicks(ticks)
-    labelTicks(myPlot.xMin, myPlot.xMax)
-    drawAxisX(myPlot.xAxisHeight)
 
+    if min < 0:
+        range = abs(min)+abs(max)
+    else:
+        range = max
+
+    categorySeries = myPlot.categorySeries
+    locations = myPlot.locations
+    height = myPlot.xAxisHeight + 5
+
+    increment = range * .1
+
+    if min < 0:
+        labels = numpy.arange(min,max+1,increment)
+    else:
+        labels = numpy.arange(0,max+1,increment)
+    
+    print(labels)
+    labels += 30
+    print(labels)
+
+    iterator = 0
+    while iterator < myPlot.xSeries.count():
+        rectLabel = categorySeries[iterator]
+        x = locations[iterator]+ 40
+        
+        setCoordinates(x,height)
+        turtle.write(rectLabel)
+
+        iterator += 1
+
+def labelAxisY():
+    setCoordinates(-100,450)
+    turtle.pd()
+    turtle.seth(90)
+    turtle.write(myPlot.xType, font=("Arial", 10, "bold"))    
+
+def makeRectangles():
     iterator = 0
     while iterator < myPlot.xSeries.count():
         x = myPlot.locations[iterator]
@@ -131,6 +165,22 @@ def Engine():
         height = (height/myPlot.rangey*1000)
         drawRectangle(x, y, height, 30)
         iterator += 1
+
+def Engine():
+
+    drawAxisY()
+
+    drawTicks(ticks)
+
+    labelTicks(myPlot.xMin, myPlot.xMax)
+
+    drawAxisX(myPlot.xAxisHeight)
+
+    makeRectangles()
+
+    labelAxisX(myPlot.xMin, myPlot.xMax)
+
+    labelAxisY()
 
     turtle.done()
 

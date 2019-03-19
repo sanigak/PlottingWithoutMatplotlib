@@ -6,25 +6,48 @@ import numpy
 class Plot:
 
 
+
+    #SET FILENAME HERE
     dataset = pandas.read_csv("example.csv")
+
+
+    ticks = numpy.arange(0,1001,100)
 
     columns = dataset.columns
 
     categoryType = columns[0]
-    xType = columns[2]
+    aType = columns[1]
+    bType = columns[2]
 
 
     categorySeries = dataset[categoryType]
-    xSeries = dataset[xType]
+    aSeries = dataset[aType]
+    bSeries = dataset[bType]
 
 
-    xMin = xSeries.min()
-    xMax = xSeries.max()
+    aMin = aSeries.min()
+    aMax = aSeries.max()
+    bMin = bSeries.min()
+    bMax = bSeries.max()
 
-    if xMin < 0:
-        rangey = abs(xMin)+abs(xMax)
+    absMin = 0
+    absMax = 0
+    if (aMin < bMin):
+        absMin = aMin
     else:
-        rangey = xMax
+        absMin = bMin
+
+    if (aMax > bMax):
+        absMax = aMax
+    else:
+        absMax = bMax
+
+
+
+    if absMin < 0:
+        rangey = abs(absMin)+abs(absMax)
+    else:
+        rangey = absMax
 
     def xAxisHeight(min, max):
         if (min>0):
@@ -41,10 +64,10 @@ class Plot:
         return locations
 
 
-    xAxisHeight = xAxisHeight(xMin,xMax)
-    locations = rectangleStartingX(xSeries.count())
-    labels = locations + 25
-    
+    xAxisHeight = xAxisHeight(absMin,absMax)
+    locations = rectangleStartingX(aSeries.count())
+    locations2 = locations + 30
+    labels = locations + 60
 
 
 

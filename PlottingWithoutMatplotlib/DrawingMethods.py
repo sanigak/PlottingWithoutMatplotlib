@@ -3,17 +3,32 @@ import pandas
 import numpy
 from Plot import Plot
 
+#Hello!
 
+#By default, program will read the csv "example.csv" from inside the project directory
+#This can be changed in line 11 of Plot.py
+
+
+
+
+
+#I chose to use turtle for graphics, and pandas and numpy for some matrix manipulation stuff
 drawer = turtle.Turtle()
 
-turtle.setworldcoordinates(-100, -100, 1100, 1100)
-turtle.hideturtle()
-ticks = numpy.arange(0,1001,100)
 
+#Set world grid, originally was simply (0,0,1000,1000), but I figured some margins would come in use depending on what labels and other info I wanted to add to the sides later
+turtle.setworldcoordinates(-200, -100, 1100, 1100)
+turtle.hideturtle()
+
+#I split the project up into 2 files: this DrawingMethods.py and Plot.py
+#DrawingMethods.py contains all the methods for drawing, as well as the engine which brings everything together
+#Plot.py contains all the abstract info necessary to draw the plot - see file for more details
 myPlot = Plot()
 
 turtle.speed = "fastest"
 
+
+#Takes in coordinates, height, and width, and draws a rectanlge to those specifications at that location
 def drawRectangle(x, y, height, width):
 
 
@@ -66,11 +81,13 @@ def drawRectangle(x, y, height, width):
 
         turtle.end_fill()
 
+#Moves the turtle cursor to a specific coordinate (without drawing a line).  Helper method used in many of the others
 def setCoordinates(x,y):
     turtle.pu()
     turtle.setx(x)
     turtle.sety(y)
 
+#Simply draws a verticle line at (0,0)
 def drawAxisY():
     setCoordinates(0,0)
     
@@ -78,6 +95,8 @@ def drawAxisY():
     turtle.seth(90)
     turtle.forward(1000)
 
+
+#Adds draws 10 tick marks at even
 def drawTicks(ticksList):
     
     
@@ -141,46 +160,64 @@ def labelAxisX(min, max):
     print(labels)
 
     iterator = 0
-    while iterator < myPlot.xSeries.count():
+    while iterator < myPlot.aSeries.count():
         rectLabel = categorySeries[iterator]
-        x = locations[iterator]+ 40
+        x = locations[iterator]+ 70
         
         setCoordinates(x,height)
         turtle.write(rectLabel)
 
         iterator += 1
 
-def labelAxisY():
-    setCoordinates(-100,450)
-    turtle.pd()
-    turtle.seth(90)
-    turtle.write(myPlot.xType, font=("Arial", 10, "bold"))    
-
 def makeRectangles():
+
+    turtle.color("black","red")
     iterator = 0
-    while iterator < myPlot.xSeries.count():
+    while iterator < myPlot.aSeries.count():
         x = myPlot.locations[iterator]
         y = myPlot.xAxisHeight
-        height = myPlot.xSeries[iterator]
+        height = myPlot.aSeries[iterator]
         height = (height/myPlot.rangey*1000)
         drawRectangle(x, y, height, 30)
         iterator += 1
+
+    turtle.color("black","blue")
+    iterator = 0
+    while iterator < myPlot.bSeries.count():
+        x = myPlot.locations2[iterator]
+        y = myPlot.xAxisHeight
+        height = myPlot.bSeries[iterator]
+        height = (height/myPlot.rangey*1000)
+        drawRectangle(x, y, height, 30)
+        iterator += 1
+
+def makeKey():
+
+    turtle.color("black","red")
+    drawRectangle(-200,500, 30,30)
+    setCoordinates(-200,465)
+    turtle.write(myPlot.aType)
+
+    turtle.color("black","blue")
+    drawRectangle(-200,400, 30,30)
+    setCoordinates(-200,365)
+    turtle.write(myPlot.bType)
 
 def Engine():
 
     drawAxisY()
 
-    drawTicks(ticks)
+    drawTicks(myPlot.ticks)
 
-    labelTicks(myPlot.xMin, myPlot.xMax)
+    labelTicks(myPlot.absMin, myPlot.absMax)
 
     drawAxisX(myPlot.xAxisHeight)
 
     makeRectangles()
 
-    labelAxisX(myPlot.xMin, myPlot.xMax)
+    labelAxisX(myPlot.absMin, myPlot.absMax)
 
-    labelAxisY()
+    makeKey()
 
     turtle.done()
 

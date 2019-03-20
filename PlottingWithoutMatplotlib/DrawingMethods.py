@@ -95,7 +95,6 @@ def drawAxisY():
     turtle.seth(90)
     turtle.forward(1000)
 
-
 #Adds draws 10 tick marks at even
 def drawTicks(ticksList):
     
@@ -106,20 +105,17 @@ def drawTicks(ticksList):
         turtle.seth(0)
         turtle.forward(30)
 
+#Using the max and min of the dataset, generates increments to label the tick marks on Y axis
 def labelTicks(min, max):
     
-    if min < 0:
-        range = abs(min)+abs(max)
-    else:
-        range = max
-
-    increment = range * .1
+    increment = myPlot.rangey * .1
 
     if min < 0:
         labels = numpy.arange(min,max+1,increment)
     else:
         labels = numpy.arange(0,max+1,increment)
-
+      
+    #This height modifier makes the labels look more centered on the tick marks
     height = -12
     for label in labels:
         setCoordinates(-50,height)
@@ -128,6 +124,7 @@ def labelTicks(min, max):
         turtle.write(str(label))
         height += 100
 
+#Draws X axis.  If dataset contains negative values, x axis will need moved up.  Height value is calculated by Plot object upon creation.
 def drawAxisX(height):
     
     
@@ -136,28 +133,48 @@ def drawAxisX(height):
     turtle.seth(0)
     turtle.forward(1000)
 
+#Draws both sets of data onto the graph using drawRectangle()
+def makeBars():
+
+
+    #Set ONE
+    turtle.color("black","red")
+    iterator = 0
+    while iterator < myPlot.aSeries.count():
+        x = myPlot.locations[iterator]
+        y = myPlot.xAxisHeight
+        height = myPlot.aSeries[iterator]
+        height = (height/myPlot.rangey*1000)
+        drawRectangle(x, y, height, 30)
+        iterator += 1
+
+
+    #Set TWO
+    turtle.color("black","blue")
+    iterator = 0
+    while iterator < myPlot.bSeries.count():
+        x = myPlot.locations2[iterator]
+        y = myPlot.xAxisHeight
+        height = myPlot.bSeries[iterator]
+        height = (height/myPlot.rangey*1000)
+        drawRectangle(x, y, height, 30)
+        iterator += 1
+
+#Labels the pairs of bars based on dataset (in default dataset this adds "year" field)
 def labelAxisX(min, max):
 
-
-    if min < 0:
-        range = abs(min)+abs(max)
-    else:
-        range = max
 
     categorySeries = myPlot.categorySeries
     locations = myPlot.locations
     height = myPlot.xAxisHeight + 5
-
-    increment = range * .1
+    increment = myPlot.rangey * .1
 
     if min < 0:
         labels = numpy.arange(min,max+1,increment)
     else:
         labels = numpy.arange(0,max+1,increment)
     
-    print(labels)
     labels += 30
-    print(labels)
 
     iterator = 0
     while iterator < myPlot.aSeries.count():
@@ -169,28 +186,7 @@ def labelAxisX(min, max):
 
         iterator += 1
 
-def makeRectangles():
-
-    turtle.color("black","red")
-    iterator = 0
-    while iterator < myPlot.aSeries.count():
-        x = myPlot.locations[iterator]
-        y = myPlot.xAxisHeight
-        height = myPlot.aSeries[iterator]
-        height = (height/myPlot.rangey*1000)
-        drawRectangle(x, y, height, 30)
-        iterator += 1
-
-    turtle.color("black","blue")
-    iterator = 0
-    while iterator < myPlot.bSeries.count():
-        x = myPlot.locations2[iterator]
-        y = myPlot.xAxisHeight
-        height = myPlot.bSeries[iterator]
-        height = (height/myPlot.rangey*1000)
-        drawRectangle(x, y, height, 30)
-        iterator += 1
-
+#Creates a key to differentiate blue/ red bars
 def makeKey():
 
     turtle.color("black","red")
@@ -203,6 +199,7 @@ def makeKey():
     setCoordinates(-200,365)
     turtle.write(myPlot.bType)
 
+#Brings everything together
 def Engine():
 
     drawAxisY()
@@ -213,7 +210,7 @@ def Engine():
 
     drawAxisX(myPlot.xAxisHeight)
 
-    makeRectangles()
+    makeBars()
 
     labelAxisX(myPlot.absMin, myPlot.absMax)
 

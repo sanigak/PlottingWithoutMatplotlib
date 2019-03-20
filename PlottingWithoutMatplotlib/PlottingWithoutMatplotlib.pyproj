@@ -42,6 +42,7 @@
     </Interpreter>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="example_custom.csv" />
     <Content Include="example.csv" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
